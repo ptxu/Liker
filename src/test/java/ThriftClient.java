@@ -20,15 +20,6 @@ import liker.Keyword;
 import liker.SearchResponseResult;
 
 /**
- * Copyright: Copyright (c) 2018 
- * Company:深圳市深网视界科技有限公司
- * 
- * @author dell
- * @date 2018年1月24日 上午10:10:06
- * @version V1.0
- */
-
-/**
  * @ClassName: ThriftClient
  * @Description: Thrift客户端
  * @author xupengtao
