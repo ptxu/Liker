@@ -50,6 +50,7 @@ public class HttpServer {
             }
 
         });
+        thread.setName(HttpServer.class.getSimpleName());
         thread.start();
     }
 

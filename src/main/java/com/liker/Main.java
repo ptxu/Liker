@@ -20,8 +20,8 @@ public class Main {
      */
     public static void run(String[] args) {
         FullTextIndexWriter.start();
-        ThriftServer.start();
         HttpServer.start();
+        ThriftServer.start();
     }
 
 }

@@ -23,7 +23,6 @@ import com.liker.services.http.common.ResponseResult;
 import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/FullTextIndex")
 public class FullTextController {
 
     /**

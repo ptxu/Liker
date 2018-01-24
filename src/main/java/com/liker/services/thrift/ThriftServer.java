@@ -50,6 +50,7 @@ public class ThriftServer {
                 LOGGER.error("Thrift server start fail.", e);
             }
         });
+        thread.setName(ThriftServer.class.getSimpleName());
         thread.start();
     }
 }

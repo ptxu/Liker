@@ -147,7 +147,7 @@ public class FullTextIndexWriter {
         };
 
         WORKER = new Thread(runnable);
-        WORKER.setName("FeatureComparator.Thread");
+        WORKER.setName(FullTextIndexWriter.class.getSimpleName());
         WORKER.start();
     }
 

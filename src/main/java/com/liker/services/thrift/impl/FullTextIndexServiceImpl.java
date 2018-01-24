@@ -24,6 +24,7 @@ import com.liker.model.Keyword;
 import com.liker.model.TaskType;
 
 import liker.AddTaskResponseResult;
+import liker.ResponseCode;
 import liker.SearchResponseResult;
 
 /**
@@ -52,25 +53,30 @@ public class FullTextIndexServiceImpl implements liker.FullTextIndexService.Ifac
             IndexTask indexTask = new IndexTask();
             indexTask.setType(TaskType.findByValue(task.getType().getValue()));
 
-            Field targetField = new Field();
-            targetField.setFieldName(task.getTargetField().getFieldName());
-            targetField.setFieldValue(task.getTargetField().getFieldValue());
-            targetField.setIndexed(task.getTargetField().isIndexed());
-            indexTask.setTargetField(targetField);
-
-            Document doc = new Document();
-            for (liker.Field field : task.getDoc().getFields()) {
-                Field _feild = new Field();
-                _feild.setFieldName(field.getFieldName());
-                _feild.setFieldValue(field.getFieldValue());
-                _feild.setIndexed(field.isIndexed());
-                doc.addField(_feild);
+            if (task.getTargetField() != null) {
+                Field targetField = new Field();
+                targetField.setFieldName(task.getTargetField().getFieldName());
+                targetField.setFieldValue(task.getTargetField().getFieldValue());
+                targetField.setIndexed(task.getTargetField().isIndexed());
+                indexTask.setTargetField(targetField);
             }
-            indexTask.setDoc(doc);
+
+            if (task.getDoc() != null && task.getDoc().getFields() != null) {
+                Document doc = new Document();
+                for (liker.Field field : task.getDoc().getFields()) {
+                    Field _feild = new Field();
+                    _feild.setFieldName(field.getFieldName());
+                    _feild.setFieldValue(field.getFieldValue());
+                    _feild.setIndexed(field.isIndexed());
+                    doc.addField(_feild);
+                }
+                indexTask.setDoc(doc);
+            }
             FullTextIndexWriter.addTask(indexTask);
         }
         AddTaskResponseResult response = new AddTaskResponseResult();
-        response.setCode(200);
+        response.setCode(ResponseCode.Success.getValue());
+        response.setMessage(com.liker.services.http.common.ResponseCode.getTypeByValue(ResponseCode.Success.getValue()).getDesc());
         return response;
     }
 
@@ -114,11 +120,13 @@ public class FullTextIndexServiceImpl implements liker.FullTextIndexService.Ifac
                 _result.setDoc(new liker.Document(fields));
                 targetList.add(_result);
             }
-            return new SearchResponseResult(200, targetList, "");
+            return new SearchResponseResult(ResponseCode.Success.getValue(), targetList, com.liker.services.http.common.ResponseCode.getTypeByValue(ResponseCode.Success.getValue()).getDesc());
         }
         catch (Exception e) {
-            e.printStackTrace();
+            SearchResponseResult response = new SearchResponseResult();
+            response.setCode(ResponseCode.UnknowErr.getValue());
+            response.setMessage(com.liker.services.http.common.ResponseCode.getTypeByValue(ResponseCode.UnknowErr.getValue()).getDesc());
+            return response;
         }
-        return null;
     }
 }
